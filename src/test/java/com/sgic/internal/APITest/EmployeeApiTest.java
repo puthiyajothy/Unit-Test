@@ -84,21 +84,20 @@ public class EmployeeApiTest {
 		EmployeeDTO empone = new EmployeeDTO();
 		empone.setEmpId(1L);
 		empone.setName("java");
-		mockMvc.perform(MockMvcRequestBuilders.get("/getempolyeebyid/{empId}",empone.getEmpId()).accept(MediaType.APPLICATION_JSON))
-		.andDo(print()).andExpect(status().isOk());
-		
+		mockMvc.perform(MockMvcRequestBuilders.get("/getempolyeebyid/{empId}", empone.getEmpId())
+				.accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
+
 	}
-	
-	
+
 	@Test
 	public void deleteApiTest() throws Exception {
-		EmployeeDTO empone =new  EmployeeDTO();
-		empone.getEmpId();
-		mockMvc.perform(MockMvcRequestBuilders.delete("/deletebyid/{empId}",empone.getEmpId()).accept(MediaType.APPLICATION_JSON))
-		.andDo(print()).andExpect(status().isOk());
-		
+		EmployeeDTO empdelete = new EmployeeDTO(1L, "");
 
-		
+		mockMvc.perform(MockMvcRequestBuilders.delete("/deletebyid/{empId}", empdelete.getEmpId())
+				.accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
+
 	}
+	
+	
 
 }

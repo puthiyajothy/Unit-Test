@@ -34,5 +34,17 @@ public class EmployeeSaveTest {
 		assertEquals("java", result.getName());
 
 	}
+	
+	
+	@Test
+	public void saveEmployee() {
+		Employee emp = new Employee();
+		emp.setEmpId(2L);
+		emp.setName("java");
+		when(EmpRepo.save(emp)).thenReturn(emp);
+		Employee result = empService.saveEmployee(emp);
+		
+		assertEquals("java", result.getName());
+	}
 
 }

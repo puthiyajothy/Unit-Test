@@ -53,7 +53,7 @@ public class EmployeeDTOMapper {
 	public EmployeeDTO deleteByEmployeeId(Long empId) {
 		logger.info(" successfully deleted ");
 		employeeService.deleteEmployeeByempId(empId);
-		return null;
+		return null; 
 
 	}
 
