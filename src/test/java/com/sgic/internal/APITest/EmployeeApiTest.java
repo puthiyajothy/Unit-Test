@@ -30,7 +30,7 @@ import wiremock.com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(EmployeeController.class)
-@ContextConfiguration(classes={EmployeeApplication.class})
+@ContextConfiguration(classes = { EmployeeApplication.class })
 public class EmployeeApiTest {
 
 	@MockBean
@@ -38,7 +38,7 @@ public class EmployeeApiTest {
 
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@Test
 	public void GetMethodapi() throws Exception {
 		List<EmployeeDTO> emplist = new ArrayList<>();
@@ -46,31 +46,31 @@ public class EmployeeApiTest {
 		employee.setEmpId(1L);
 		employee.setName("name");
 		emplist.add(employee);
-		
+
 		System.out.println(emplist);
 
 //		when(service.getallemployee()).thenReturn(emp);
 //		assertEquals(1, EmpRepo.findAll().size());
-		
+
 		when(service.getAllSortEmployeeInfo()).thenReturn(emplist);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/getallemployee").accept(MediaType.APPLICATION_JSON);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/getallemployee")
+				.accept(MediaType.APPLICATION_JSON);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-		String expected = "[{\"empId\":1,\"name\":\"name\"}]";;
+		String expected = "[{\"empId\":1,\"name\":\"name\"}]";
+		;
 		assertEquals(expected, result.getResponse().getContentAsString());
 
 	}
-	
-	
+
 	@Test
 	public void SaveApiTest() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/createemployee").content(asJsonString(new EmployeeDTO(1L, "java")))
-				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andDo(print())
-				.andExpect(status().isOk());
-	
-	
-	
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/createemployee").content(asJsonString(new EmployeeDTO(1L, "java")))
+						.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+				.andDo(print()).andExpect(status().isOk());
+
 	}
-	
+
 	public static String asJsonString(final Object obj) {
 		try {
 			return new ObjectMapper().writeValueAsString(obj);
@@ -78,5 +78,27 @@ public class EmployeeApiTest {
 			throw new RuntimeException(e);
 		}
 	}
+
+	@Test
+	public void getone() throws Exception {
+		EmployeeDTO empone = new EmployeeDTO();
+		empone.setEmpId(1L);
+		empone.setName("java");
+		mockMvc.perform(MockMvcRequestBuilders.get("/getempolyeebyid/{empId}",empone.getEmpId()).accept(MediaType.APPLICATION_JSON))
+		.andDo(print()).andExpect(status().isOk());
+		
+	}
 	
+	
+	@Test
+	public void deleteApiTest() throws Exception {
+		EmployeeDTO empone =new  EmployeeDTO();
+		empone.getEmpId();
+		mockMvc.perform(MockMvcRequestBuilders.delete("/deletebyid/{empId}",empone.getEmpId()).accept(MediaType.APPLICATION_JSON))
+		.andDo(print()).andExpect(status().isOk());
+		
+
+		
+	}
+
 }
